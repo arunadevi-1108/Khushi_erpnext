@@ -21,9 +21,9 @@ def get_columns() -> list[dict]:
         {"label": "Item Code", "fieldname": "item_code", "fieldtype": "Link", "options": "Item", "width": 180},
         {"label": "Qty to Deliver", "fieldname": "qty_to_deliver", "fieldtype": "float"},
         {"label": "Stock Balance", "fieldname": "stock_balance", "fieldtype": "float"},
-        {"label": "Purchase Qty", "fieldname": "purchase_qty", "fieldtype": "float"},
+        {"label": "Purchase Qty Pending", "fieldname": "purchase_qty", "fieldtype": "float"},
         {"label": "Supplier", "fieldname": "supplier", "fieldtype": "Data", "width": 220},
-        {"label": "Subcontract Qty", "fieldname": "subcontract_qty", "fieldtype": "float"},
+        {"label": "Subcontract Qty Pending", "fieldname": "subcontract_qty", "fieldtype": "float"},
         {"label": "Jobber", "fieldname": "jobber", "fieldtype": "Data",  "width": 220},
         {"label": "Qty Needed", "fieldname": "qty_needed", "fieldtype": "float"}
     ]
