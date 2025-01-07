@@ -16,6 +16,7 @@ frappe.query_reports["Sales Order VS Stock Balance Report"] = {
 				{value: "Completed", description:""}, {value: "Cancelled", description:""},
 				{value: "Closed", description:""}]
 		},
+		{label: "Customer", fieldname: "customer", fieldtype: "Link", options: 'Customer'},
 		{label: "Supplier", fieldname: "supplier", fieldtype: "Link", options: 'Supplier'},
 		{label: "Jobber", fieldname: "jobber", fieldtype: "Link", options: 'Supplier'},
 		{label: "Item Group", fieldname: "item_group", fieldtype: "Link", options: 'Item Group'},

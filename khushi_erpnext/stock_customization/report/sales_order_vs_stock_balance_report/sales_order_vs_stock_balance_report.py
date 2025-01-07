@@ -19,6 +19,7 @@ def get_columns() -> list[dict]:
         {"label": "Status", "fieldname": "status", "fieldtype": "Data"},
         {"label": "Customer", "fieldname": "customer", "fieldtype": "Data", "width": 180},
         {"label": "Item Code", "fieldname": "item_code", "fieldtype": "Link", "options": "Item", "width": 180},
+        {"label": "Actual Order qty", "fieldname": "actual_order_qty", "fieldtype": "float"},
         {"label": "Qty to Deliver", "fieldname": "qty_to_deliver", "fieldtype": "float"},
         {"label": "Stock Balance", "fieldname": "stock_balance", "fieldtype": "float"},
         {"label": "Purchase Qty Pending", "fieldname": "purchase_qty", "fieldtype": "float"},
@@ -33,8 +34,8 @@ def get_columns() -> list[dict]:
 def get_select_field(filters: dict) -> str:
     """Return the select statement based on the filters"""
     select_fields = """so.transaction_date as "Date",so.name as "Sales Order",so.status as "Status",
-    so.customer as "Customer", so.item_code as "Item Code",
-    so.qty as "qty_to_deliver", COALESCE(b.actual_qty, 0) AS "stock_qty",
+    so.customer as "customer", so.item_code as "Item Code", so.qty as "actual_order_qty",
+    so.qty_to_deliver as "qty_to_deliver", COALESCE(b.actual_qty, 0) AS "stock_qty",
     COALESCE(poiq.poi_qty, 0) AS "poi_qty", poiq.supplier,
     COALESCE(scirq.subcontract_qty, 0) AS "subcontract_qty", scirq.jobber,
     so.qty - (COALESCE(b.actual_qty, 0) + COALESCE(poiq.poi_qty, 0) + COALESCE(scirq.subcontract_qty, 0)) AS qty_needed"""
@@ -42,8 +43,8 @@ def get_select_field(filters: dict) -> str:
     if group_by_item:
         select_fields = """GROUP_CONCAT(DISTINCT so.transaction_date) as "Date",
         GROUP_CONCAT(DISTINCT so.name) as "Sales Order", GROUP_CONCAT(DISTINCT so.status) as "Status",
-        GROUP_CONCAT(DISTINCT so.customer) as "Customer", so.item_code as "Item Code", SUM(so.qty) as "qty_to_deliver",
-        COALESCE(b.actual_qty, 0) AS "stock_qty", COALESCE(poiq.poi_qty, 0) AS "poi_qty", poiq.supplier,
+        GROUP_CONCAT(DISTINCT so.customer) as "customer", so.item_code as "Item Code", SUM(so.qty) as "actual_order_qty",
+        SUM(so.qty_to_deliver) as "qty_to_deliver", COALESCE(b.actual_qty, 0) AS "stock_qty", COALESCE(poiq.poi_qty, 0) AS "poi_qty", poiq.supplier,
         COALESCE(scirq.subcontract_qty, 0) AS "subcontract_qty", scirq.jobber, 
         SUM(so.qty) - (COALESCE(b.actual_qty, 0) + COALESCE(poiq.poi_qty, 0) + COALESCE(scirq.subcontract_qty, 0)) AS qty_needed"""
     return select_fields
@@ -95,6 +96,7 @@ def get_condition(filters: dict) -> str:
     sales_order: str = filters.get("sales_order", "")
     item_group: str = filters.get("item_group", "")
     status: tuple = tuple(filters.get("status", []))
+    customer: str = filters.get("customer", "")
     if company:
         cond_list.append(f"so.company = '{company}'")
     if f_date:
@@ -110,6 +112,8 @@ def get_condition(filters: dict) -> str:
             cond_list.append(f"so.status = '{status[0]}'")
         else:
             cond_list.append(f"so.status IN {status}")
+    if customer:
+        cond_list.append(f"customer LIKE '%{customer}%'")
     cond: str = f"WHERE {' AND '.join(cond_list)}" if cond_list else ""
     return cond
 

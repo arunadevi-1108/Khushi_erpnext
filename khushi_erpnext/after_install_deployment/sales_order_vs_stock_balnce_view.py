@@ -5,7 +5,8 @@ def create_soiq_view():
     query = """
            CREATE OR REPLACE
             ALGORITHM = UNDEFINED VIEW `veuSales Order Item Quantity` AS
-            SELECT so.transaction_date, so.name, so.status, so.customer, soi.item_code, soi.qty, so.company FROM `tabSales Order` AS so
+            SELECT so.transaction_date, so.name, so.status, so.customer, soi.item_code, soi.qty,
+             COALESCE(soi.qty, 0) - COALESCE(soi.delivered_qty, 0) AS "qty_to_deliver", so.company FROM `tabSales Order` AS so
             JOIN `tabSales Order Item` AS soi ON so.name = soi.parent;
             """
     frappe.db.sql(query)
