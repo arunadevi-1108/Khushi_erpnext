@@ -127,7 +127,7 @@ def get_query(filters: dict) -> str:
                 {limit}
              """
 
-    total_count_query: str = f""" SELECT item as total FROM stock_maintains_report_view smr {where} {group_by} {having} """
+    total_count_query: str = f""" SELECT {qty_field} FROM stock_maintains_report_view smr {where} {group_by} {having} """
     return content_query, total_count_query
 
 
@@ -143,5 +143,5 @@ def get_data(filters: str) -> tuple:
     filters: dict = frappe.parse_json(filters)
     content_query, total_count_query = get_query(filters)
     data: list[dict] = frappe.db.sql(content_query, as_dict=True)
-    total_count: list = frappe.db.sql(total_count_query)
-    return data, len(total_count)
+    total_count: list = frappe.db.sql(total_count_query,pluck='qty')
+    return data, len(total_count), sum(total_count) if total_count else 0
