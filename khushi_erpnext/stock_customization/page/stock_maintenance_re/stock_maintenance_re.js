@@ -94,7 +94,7 @@ frappe.pages['stock-maintenance-re'].on_page_load = function(wrapper) {
                 freeze_message: "Loading",
                 callback: function (r) {
                     grid_container.empty();
-                    display_report_data(r.message[0],r.message[1]);
+                    display_report_data(r.message[0],r.message[1],r.message[2]);
                 }
             });
     }
@@ -151,8 +151,8 @@ frappe.pages['stock-maintenance-re'].on_page_load = function(wrapper) {
     page.add_button('Reset Filters', reset_filters);
 
     //  To display report
-    function display_report_data(items,total_count) {
-         page.set_indicator(`Total Count: ${total_count}`, 'green');
+    function display_report_data(items,total_count,total_qty) {
+         page.set_indicator(`Total Count: ${total_count} | Total Qty: ${total_qty}` , 'green');
         if (!items || items.length === 0) {
         $('<div>No data found</div>')
             .css({
