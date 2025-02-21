@@ -74,3 +74,14 @@ jobs:
             ECOMMERCE_BRANCH=${{ github.event.inputs.ecommerce_version }}
             PRINT_DESIGNER_BRANCH=${{ github.event.inputs.print_designer }}
             GIT_CREDENTIALS=${{ secrets.GIT_CREDENTIALS }}
+      -
+        name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: SSH into VM and run command
+        run: |
+          ssh -o StrictHostKeyChecking=no user@your_vm_ip_address << 'EOF'
+            echo "Connected to VM!"
+          EOF
