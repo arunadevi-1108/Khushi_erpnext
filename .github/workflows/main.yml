@@ -39,6 +39,10 @@ on:
         description: 'Print Designer Version'
         required: true
         type: string
+      whatsapp_pro:
+        description: 'Whatsapp Pro Version'
+        required: true
+        type: string
         
 jobs:
   build:
@@ -74,6 +78,7 @@ jobs:
             ECOMMERCE_BRANCH=${{ github.event.inputs.ecommerce_version }}
             PRINT_DESIGNER_BRANCH=${{ github.event.inputs.print_designer }}
             GIT_CREDENTIALS=${{ secrets.GIT_CREDENTIALS }}
+            WHATSAPP_PRO_BRANCH=${{ github.event.inputs.whatsapp_pro}}
       -
         name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
