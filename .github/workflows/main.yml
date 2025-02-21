@@ -87,6 +87,6 @@ jobs:
 
       - name: SSH into VM and run command
         run: |
-          ssh -o StrictHostKeyChecking=no user@your_vm_ip_address << 'EOF'
+          ssh -o StrictHostKeyChecking=no user@98.70.107.103 << 'EOF'
             echo "Connected to VM!"
           EOF
