@@ -4,7 +4,6 @@ FROM python:${PYTHON_VERSION}-slim-${DEBIAN_BASE} AS base
 
 COPY resources/nginx-template.conf /templates/nginx/frappe.conf.template
 COPY resources/nginx-entrypoint.sh /usr/local/bin/nginx-entrypoint.sh
-COPY nvm/install.sh .
 
 ARG WKHTMLTOPDF_VERSION=0.12.6.1-3
 ARG WKHTMLTOPDF_DISTRO=bookworm
@@ -53,8 +52,7 @@ RUN useradd -ms /bin/bash frappe \
     jq \
     && apt-get install -y wget \
     && mkdir -p ${NVM_DIR} \
-    && chmod 755 install.sh \
-    && ./install.sh \
+    && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash \
     && . ${NVM_DIR}/nvm.sh \
     && nvm install ${NODE_VERSION} \
     && nvm use v${NODE_VERSION} \
