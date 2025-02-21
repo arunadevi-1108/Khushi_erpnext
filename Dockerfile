@@ -119,6 +119,7 @@ ARG INDIA_COMPLIANCE_BRANCH=version-15
 ARG ECOMMERCE_BRANCH=main
 ARG PRINT_DESIGNER_BRANCH=main
 ARG FRAPPE_PATH=https://github.com/frappe/frappe
+ARG GIT_CREDENTIALS=""
 RUN bench init \
     --frappe-branch=${FRAPPE_BRANCH} \
     --frappe-path=${FRAPPE_PATH} \
@@ -128,6 +129,8 @@ RUN bench init \
     --verbose \
     /home/frappe/frappe-bench && \
   cd /home/frappe/frappe-bench && \
+  git config --global credentials.helper store && \
+  echo ${GIT_CREDENTIALS} > ~/.git_credentials && \
   bench get-app erpnext --branch ${ERPNEXT_BRANCH} && \
   bench get-app hrms --branch ${HRMS_BRANCH} && \
   bench get-app https://github.com/TechInsights-ai-org/Khushi_erpnext.git --branch ${KHUSHI_ERPNEXT_BRANCH} && \
