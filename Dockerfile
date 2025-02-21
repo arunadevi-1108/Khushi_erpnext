@@ -133,7 +133,7 @@ RUN bench init \
   bench get-app hrms --branch ${HRMS_BRANCH} && \
   bench get-app https://github.com/TechInsights-ai-org/Khushi_erpnext.git --branch ${KHUSHI_ERPNEXT_BRANCH} && \
   bench get-app https://github.com/TechInsights-ai-org/HRMS-Plus.git --branch ${HRMS_PLUS_BRANCH} && \
-  bench get-app https://github.com/TechInsights-ai-org/frappe_whatsapp_pro.git --branch ${WHATSAPP_PRO_BRANCH} && \
+  bench get-app https://github.com/TechInsights-ai-org/frappe_whatsapp.git --branch ${WHATSAPP_PRO_BRANCH} && \
   bench get-app https://github.com/resilient-tech/india-compliance.git --branch ${INDIA_COMPLIANCE_BRANCH} && \
   bench get-app https://github.com/frappe/ecommerce_integrations.git --branch ${ECOMMERCE_BRANCH} && \
   bench get-app https://github.com/frappe/print_designer.git --branch ${PRINT_DESIGNER_BRANCH} && \
