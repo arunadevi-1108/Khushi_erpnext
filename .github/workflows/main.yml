@@ -79,14 +79,17 @@ jobs:
             PRINT_DESIGNER_BRANCH=${{ github.event.inputs.print_designer }}
             GIT_CREDENTIALS=${{ secrets.GIT_CREDENTIALS }}
             WHATSAPP_PRO_BRANCH=${{ github.event.inputs.whatsapp_pro}}
-      -
-        name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: SSH into VM and run command
+      - name: Set up SSH key
         run: |
-          ssh -o StrictHostKeyChecking=no user@98.70.107.103 << 'EOF'
-            echo "Connected to VM!"
-          EOF
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Add VM host to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H 98.70.107.103 >> ~/.ssh/known_hosts
+
+      - name: SSH into VM
+        run: |
+          ssh -o StrictHostKeyChecking=no user@98.70.107.103 'echo "Successfully connected to the VM"'
