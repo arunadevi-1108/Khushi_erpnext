@@ -1,0 +1,76 @@
+name: deploy
+
+on: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Image Version'
+        required: true
+        type: string
+      frappe_version:
+        description: 'Frappe Version'
+        required: true
+        type: string
+      erpnext_version:
+        description: 'ERPNext Version'
+        required: true
+        type: string
+      hrms_version:
+        description: 'HRMS Version'
+        required: true
+        type: string
+      khushi_version:
+        description: 'Khushi ERPNext Version'
+        required: true
+        type: string
+      hrms_plus_version:
+        description: 'HRMS Plus Version'
+        required: true
+        type: string
+      india_compliance_version:
+        description: 'India Compliance Version'
+        required: true
+        type: string
+      ecommerce_version:
+        description: 'Ecommerce Integration Version'
+        required: true
+        type: string
+      print_designer:
+        description: 'Print Designer Version'
+        required: true
+        type: string
+        
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/tis-khushi:${{ github.event.inputs.version }}
+          build-args: |
+            FRAPPE_BRANCH=${{ github.event.inputs.frappe_version }}
+            ERPNEXT_BRANCH=${{ github.event.inputs.erpnext_version }}
+            HRMS_BRANCH=${{ github.event.inputs.hrms_version }}
+            KHUSHI_ERPNEXT_BRANCH=${{ github.event.inputs.khushi_version }}
+            HRMS_PLUS_BRANCH=${{ github.event.inputs.hrms_plus_version }}
+            INDIA_COMPLIANCE_BRANCH=${{ github.event.inputs.india_compliance_version }}
+            ECOMMERCE_BRANCH=${{ github.event.inputs.ecommerce_version }}
+            PRINT_DESIGNER_BRANCH=${{ github.event.inputs.print_designer }}
+            GIT_CREDENTIALS=${{ secrets.GIT_CREDENTIALS }}
