@@ -86,4 +86,8 @@ jobs:
 
       - name: SSH into VM
         run: |
-          ssh -o StrictHostKeyChecking=no azureuser@98.70.107.103 'docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env down && sed -i "s/\(IMAGE=[^:]*:\)[^ ]*/\1${{ github.event.inputs.version }}/" ~/gitops/prod.env && docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env pull && docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env up -d'
+          ssh -o StrictHostKeyChecking=no azureuser@98.70.107.103 'VERSION="${{ github.event.inputs.version }}" && \
+          docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env down && \
+          sed -i "s/\(IMAGE=[^:]*:\)[^ ]*/\1${VERSION}/" ~/gitops/prod.env && \
+          docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env pull && \
+          docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env up -d'
