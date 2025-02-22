@@ -24,6 +24,20 @@ RUN useradd -ms /bin/bash frappe \
     libpangoft2-1.0-0 \
     libpangocairo-1.0-0 \
     restic \
+    libmagic1 \
+    ffmpeg \
+    libatk-bridge2.0-0 \
+    libdrm2 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxfixes3 \
+    libxrandr2 \
+    libgbm1 \
+    libxkbcommon0 \
+    libatspi2.0-0 \
+    gstreamer1.0-libav \
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good \
     mariadb-client \
     fonts-liberation \
     libasound2 \
