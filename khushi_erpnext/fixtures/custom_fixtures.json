@@ -1431,7 +1431,7 @@
     "doctype": "Custom Field"
   },
   {
-    "name ": "Delivery Note Item-rate-label",
+    "name": "Delivery Note Item-rate-label",
     "doctype_or_field": "DocField",
     "doc_type": "Delivery Note Item",
     "property": "label",
@@ -1442,7 +1442,7 @@
     "doctype": "Property Setter"
   },
   {
-    "name ": "Delivery Note Item-main-field_order",
+    "name": "Delivery Note Item-main-field_order",
     "doctype_or_field": "DocType",
     "doc_type": "Delivery Note Item",
     "property": "field_order",
@@ -1452,7 +1452,7 @@
     "doctype": "Property Setter"
   },
   {
-    "name ": "Sales Invoice Item-main-field_order",
+    "name": "Sales Invoice Item-main-field_order",
     "doctype_or_field": "DocType",
     "doc_type": "Sales Invoice Item",
     "property": "field_order",
@@ -1462,7 +1462,7 @@
     "doctype": "Property Setter"
   },
   {
-    "name ": "Sales Invoice Item-rate-label",
+    "name": "Sales Invoice Item-rate-label",
     "doctype_or_field": "DocField",
     "doc_type": "Sales Invoice Item",
     "property": "label",
@@ -1473,7 +1473,7 @@
     "doctype": "Property Setter"
   },
   {
-    "name ": "Sales Order Item-main-field_order",
+    "name": "Sales Order Item-main-field_order",
     "doctype_or_field": "DocType",
     "doc_type": "Sales Order Item",
     "property": "field_order",
@@ -1483,7 +1483,7 @@
     "doctype": "Property Setter"
   },
   {
-    "name ": "Sales Order Item-rate-label",
+    "name": "Sales Order Item-rate-label",
     "doctype_or_field": "DocField",
     "doc_type": "Sales Order Item",
     "property": "label",
@@ -1494,7 +1494,7 @@
     "doctype": "Property Setter"
   },
   {
-    "name ": "Delivery Note Item-discount_and_margin-hidden",
+    "name": "Delivery Note Item-discount_and_margin-hidden",
     "doctype_or_field": "DocField",
     "doc_type": "Delivery Note Item",
     "property": "hidden",
@@ -1505,7 +1505,7 @@
     "doctype": "Property Setter"
   },
   {
-    "name ": "Delivery Note-main-field_order",
+    "name": "Delivery Note-main-field_order",
     "doctype_or_field": "DocType",
     "doc_type": "Delivery Note",
     "property": "field_order",
@@ -1516,10 +1516,6 @@
   },
   {
     "name": "Make Discount Entry for Sales",
-    "owner": "Administrator",
-    "creation": "2025-03-07 19:57:32.136054",
-    "modified": "2025-03-11 01:08:15.853726",
-    "modified_by": "Administrator",
     "docstatus": 0,
     "idx": 0,
     "script_type": "DocType Event",
@@ -1537,10 +1533,6 @@
   },
   {
     "name": "Cancel Discount entry",
-    "owner": "Administrator",
-    "creation": "2025-03-11 01:09:16.146626",
-    "modified": "2025-03-11 01:09:32.400583",
-    "modified_by": "Administrator",
     "docstatus": 0,
     "idx": 0,
     "script_type": "DocType Event",
@@ -1558,10 +1550,6 @@
   },
   {
     "name": "Sales Order Discount",
-    "owner": "Administrator",
-    "creation": "2025-03-04 00:12:07.803779",
-    "modified": "2025-03-07 18:36:25.097617",
-    "modified_by": "Administrator",
     "docstatus": 0,
     "idx": 0,
     "dt": "Sales Order",
@@ -1573,10 +1561,6 @@
   },
   {
     "name": "Sales Invoice Discount",
-    "owner": "Administrator",
-    "creation": "2025-03-04 20:58:03.088863",
-    "modified": "2025-03-07 18:48:35.620787",
-    "modified_by": "Administrator",
     "docstatus": 0,
     "idx": 0,
     "dt": "Sales Invoice",
@@ -1588,10 +1572,6 @@
   },
   {
     "name": "Delivery Note Discount",
-    "owner": "Administrator",
-    "creation": "2025-03-04 22:11:16.659304",
-    "modified": "2025-03-07 18:48:45.935482",
-    "modified_by": "Administrator",
     "docstatus": 0,
     "idx": 0,
     "dt": "Delivery Note",
