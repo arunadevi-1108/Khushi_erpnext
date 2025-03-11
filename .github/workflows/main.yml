@@ -89,6 +89,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no azureuser@98.70.107.103 'VERSION="${{ github.event.inputs.version }}" && \
           docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env down && \
           sed -i "s/\(IMAGE=[^:]*:\)[^ ]*/\1${VERSION}/" ~/gitops/prod.env && \
+          sudo rm ~/data/redis/dump.rdb && \
           docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env pull && \
           docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env up -d && \
-          docker compose -p erpnext exec -T bench --site erp.beyondinvitation.com migrate'
+          docker compose -p erpnext exec -T bench --site erp.beyondinvitation.com migrate
