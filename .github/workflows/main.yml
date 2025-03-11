@@ -92,4 +92,4 @@ jobs:
           sudo rm ~/data/redis/dump.rdb && \
           docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env pull && \
           docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env up -d && \
-          docker compose -p erpnext exec -T bench --site erp.beyondinvitation.com migrate
+          docker compose -p erpnext exec -T bench --site erp.beyondinvitation.com migrate'
