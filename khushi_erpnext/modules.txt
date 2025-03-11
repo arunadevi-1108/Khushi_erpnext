@@ -2,3 +2,4 @@ Khushi
 Stock customization
 Core Customization
 Planning
+Accounts Customization
