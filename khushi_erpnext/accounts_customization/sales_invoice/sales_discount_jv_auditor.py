@@ -13,8 +13,6 @@ class SalesDiscountJvAuditor:
                             "party_type": "Customer",
                             "party": self.invoice_doc.customer,
                             "debit_in_account_currency": self.invoice_doc.custom_grand_total_discount,
-                            "reference_type": "Sales Invoice",
-                            "reference_name": self.invoice_doc.name,
                             "cost_center": self.invoice_doc.cost_center}
         self.jv_dict["accounts"].append(debit_note)
 
@@ -59,6 +57,8 @@ class SalesDiscountJvAuditor:
         jv_doc.submit()
 
     def cancel_jv(self):
+        if not self.validate():
+            return
         jvs = frappe.get_all(self.jv_doc_name, filters={"bill_no": self.invoice_doc.name})
         for jv in jvs:
             jv_doc = frappe.get_doc(self.jv_doc_name, jv['name'])

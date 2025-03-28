@@ -245,6 +245,7 @@ after_install = "khushi_erpnext.after_install_deployment.after_install_executor.
 fixtures = [
     "Custom Field",
     "Comparison Type",
-    "Role"
+    "Role",
+    "Property Setter"
 ]
 
