@@ -13,8 +13,6 @@ class SalesDiscountJvAuditor:
                             "party_type": "Customer",
                             "party": self.invoice_doc.customer,
                             "debit_in_account_currency": self.invoice_doc.custom_grand_total_discount,
-                            "reference_type": "Sales Invoice",
-                            "reference_name": self.invoice_doc.name,
                             "cost_center": self.invoice_doc.cost_center}
         self.jv_dict["accounts"].append(debit_note)
 
