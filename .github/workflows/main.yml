@@ -86,6 +86,6 @@ jobs:
 
       - name: SSH and Deploy
         run: |
-          ssh -o StrictHostKeyChecking=no azureuser@98.70.107.103 'VERSION="${{ github.event.inputs.version }}" && \
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} 'VERSION="${{ github.event.inputs.version }}" && \
           docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env down && \
           sed -i "s/\(IMAGE=[^:]*:\)[^ ]*/\1${VERSION}/" ~/gitops/prod.env'
