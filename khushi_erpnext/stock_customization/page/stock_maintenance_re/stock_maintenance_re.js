@@ -150,6 +150,116 @@ frappe.pages['stock-maintenance-re'].on_page_load = function(wrapper) {
     // Add the Reset Filters button
     page.add_button('Reset Filters', reset_filters);
 
+    page.add_button('Send WhatsApp Notification', function() {
+        let selected_items = [];
+
+        grid_container.find('.item-checkbox:checked').each(function() {
+            let item_div = $(this).closest('.item-container');
+            let item_code_text = item_div.find('div').first().text();
+            let item_code = item_code_text.replace('Item: ', '').trim();
+            selected_items.push(item_code);
+        });
+
+        if (selected_items.length === 0) {
+            frappe.msgprint('No items selected!');
+            return;
+        }
+
+        let d = new frappe.ui.Dialog({
+            title: 'Send WhatsApp Notification',
+            fields: [
+                {
+                    label: 'WhatsApp Template',
+                    fieldname: 'whatsapp_template',
+                    fieldtype: 'Link',
+                    options: 'WhatsApp Notification',
+                    reqd: 1
+                },
+                {
+                    fieldtype: 'Section Break',
+                    label: 'Send To Options'
+                },
+                {
+                    fieldname: 'send_group',
+                    label: 'Send to Group',
+                    fieldtype: 'Check',
+                    default: 0,
+                    change: function() {
+                        toggle_visibility();
+                    }
+                },
+                {
+                    fieldname: 'send_individual',
+                    label: 'Send to Individual',
+                    fieldtype: 'Check',
+                    default: 0,
+                    change: function() {
+                        toggle_visibility();
+                    }
+                },
+                {
+                    fieldtype: 'Column Break'
+                },
+                {
+                    fieldname: 'group',
+                    label: 'Group',
+                    fieldtype: 'Link',
+                    options: 'WhatsApp Group',
+                    depends_on: 'eval:doc.send_group==1'
+                },
+                {
+                    fieldtype: 'Column Break'
+                },
+                {
+                    fieldname: 'individual',
+                    label: 'Individual',
+                    fieldtype: 'Link',
+                    options: 'WhatsApp Phone Number',
+                    depends_on: 'eval:doc.send_individual==1'
+                },
+                {
+                    fieldtype: 'Section Break'
+                }
+            ],
+            primary_action_label: 'Send',
+            primary_action(values) {
+                if (!values.whatsapp_template) {
+                    frappe.msgprint('WhatsApp Template is required!');
+                    return;
+                }
+
+                // Call backend
+                frappe.msgprint('Process has been started!')
+                frappe.call({
+                    method: "frappe_whatsapp.utils.trigger_bulk_wp_notification",
+                    args: {
+                        reference_names: selected_items,
+                        template_name: values.whatsapp_template,
+                        is_group: values.send_group ? 1 : 0,
+                        is_individual: values.send_individual ? 1 : 0,
+                        group_name: values.group || null,
+                        individual_name: values.individual || null
+                    },
+                    callback: function(r) {
+                        if (r.message === 'Success') {
+                            frappe.msgprint(__('Notifications sent successfully!'));
+                        }
+                    }
+                });
+
+                d.hide();
+            }
+        });
+
+        d.show();
+
+        function toggle_visibility() {
+            d.fields_dict.group.toggle(d.get_value('send_group') ? true : false);
+            d.fields_dict.individual.toggle(d.get_value('send_individual') ? true : false);
+        }
+    });
+
+
     //  To display report
     function display_report_data(items,total_count,total_qty) {
          page.set_indicator(`Total Count: ${total_count} | Total Qty: ${total_qty}` , 'green');
@@ -167,35 +277,47 @@ frappe.pages['stock-maintenance-re'].on_page_load = function(wrapper) {
     }
 
         items.forEach(function (item) {
-            let item_div = $('<div class="item-container"></div>').css({
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                padding: '15px',
-                textAlign: 'center',
-                border: '1px solid #ddd',
-                borderRadius: '10px',
-                background: 'linear-gradient(135deg, #e3f2fd, #fce4ec)',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                transition: 'transform 0.2s, box-shadow 0.2s',
-                cursor: 'pointer',
-                marginBottom: '20px'
-            }).hover(
-                function () {
-                    // On hover, slightly enlarge the item and add a stronger shadow
-                    $(this).css({
-                        transform: 'scale(1.05)',
-                        boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'
-                    });
-                },
-                function () {
-                    // Reset the size and shadow when hover is removed
-                    $(this).css({
-                        transform: 'scale(1)',
-                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-                    });
-                }
-            ).appendTo(grid_container);
+            // Create a container with relative positioning
+        let item_div = $('<div class="item-container"></div>').css({
+            position: 'relative',  // <-- THIS IS IMPORTANT
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '15px',
+            textAlign: 'center',
+            border: '1px solid #ddd',
+            borderRadius: '10px',
+            background: 'linear-gradient(135deg, #e3f2fd, #fce4ec)',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            transition: 'transform 0.2s, box-shadow 0.2s',
+            cursor: 'pointer',
+            marginBottom: '20px'
+        }).hover(
+            function () {
+                $(this).css({
+                    transform: 'scale(1.05)',
+                    boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'
+                });
+            },
+            function () {
+                $(this).css({
+                    transform: 'scale(1)',
+                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                });
+            }
+        ).appendTo(grid_container);
+
+        // ADD the Checkbox (absolute positioned)
+        let checkbox = $('<input type="checkbox" class="item-checkbox">').css({
+            position: 'absolute',
+            top: '10px',
+            left: '10px',
+            transform: 'scale(1.2)',
+            cursor: 'pointer'
+        }).appendTo(item_div);
+
+
+
 
             // Item Image
             let img = $('<img>').attr('src', item.image || 'placeholder-image-url.png')
