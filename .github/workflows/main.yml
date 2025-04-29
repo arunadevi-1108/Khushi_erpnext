@@ -87,5 +87,6 @@ jobs:
       - name: SSH and Deploy
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} 'VERSION="${{ github.event.inputs.version }}" && \
-          docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env down && \
+          docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env pull && \
+          docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env up -d && \
           sed -i "s/\(IMAGE=[^:]*:\)[^ ]*/\1${VERSION}/" ~/gitops/prod.env'
