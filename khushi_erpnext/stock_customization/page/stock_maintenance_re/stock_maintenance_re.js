@@ -188,15 +188,15 @@ frappe.pages['stock-maintenance-re'].on_page_load = function(wrapper) {
                         toggle_visibility();
                     }
                 },
-                {
-                    fieldname: 'send_individual',
-                    label: 'Send to Individual',
-                    fieldtype: 'Check',
-                    default: 0,
-                    change: function() {
-                        toggle_visibility();
-                    }
-                },
+                // {
+                //     fieldname: 'send_individual',
+                //     label: 'Send to Individual',
+                //     fieldtype: 'Check',
+                //     default: 0,
+                //     change: function() {
+                //         toggle_visibility();
+                //     }
+                // },
                 {
                     fieldtype: 'Column Break'
                 },
@@ -210,13 +210,13 @@ frappe.pages['stock-maintenance-re'].on_page_load = function(wrapper) {
                 {
                     fieldtype: 'Column Break'
                 },
-                {
-                    fieldname: 'individual',
-                    label: 'Individual',
-                    fieldtype: 'Link',
-                    options: 'WhatsApp Phone Number',
-                    depends_on: 'eval:doc.send_individual==1'
-                },
+                // {
+                //     fieldname: 'individual',
+                //     label: 'Individual',
+                //     fieldtype: 'Link',
+                //     options: 'WhatsApp Phone Number',
+                //     depends_on: 'eval:doc.send_individual==1'
+                // },
                 {
                     fieldtype: 'Section Break'
                 }
@@ -229,7 +229,7 @@ frappe.pages['stock-maintenance-re'].on_page_load = function(wrapper) {
                 }
 
                 // Call backend
-                frappe.msgprint('Process has been started!')
+                // frappe.msgprint('Process has been started!')
                 frappe.call({
                     method: "frappe_whatsapp.utils.trigger_bulk_wp_notification",
                     args: {
@@ -253,9 +253,27 @@ frappe.pages['stock-maintenance-re'].on_page_load = function(wrapper) {
 
         d.show();
 
+
+        function get_phone_number(contact = "") {
+            return new Promise((resolve, reject) => {
+                frappe.call({
+                    method: 'frappe_whatsapp.utils.get_phone_number',
+                    args: { contact },
+                    callback: function(r) {
+                        if (r.message) {
+                            resolve(r.message); // must be array of strings or { label, value }
+                        } else {
+                            resolve([]);
+                        }
+                    },
+                    error: reject
+                });
+            });
+        }
+
         function toggle_visibility() {
             d.fields_dict.group.toggle(d.get_value('send_group') ? true : false);
-            d.fields_dict.individual.toggle(d.get_value('send_individual') ? true : false);
+            // d.fields_dict.individual.toggle(d.get_value('send_individual') ? true : false);
         }
     });
 
