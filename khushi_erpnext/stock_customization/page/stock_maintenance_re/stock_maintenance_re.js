@@ -165,117 +165,98 @@ frappe.pages['stock-maintenance-re'].on_page_load = function(wrapper) {
             return;
         }
 
-        let d = new frappe.ui.Dialog({
-            title: 'Send WhatsApp Notification',
-            fields: [
-                {
-                    label: 'WhatsApp Template',
-                    fieldname: 'whatsapp_template',
-                    fieldtype: 'Link',
-                    options: 'WhatsApp Notification',
-                    reqd: 1
-                },
-                {
-                    fieldtype: 'Section Break',
-                    label: 'Send To Options'
-                },
-                {
-                    fieldname: 'send_group',
-                    label: 'Send to Group',
-                    fieldtype: 'Check',
-                    default: 0,
-                    change: function() {
-                        toggle_visibility();
-                    }
-                },
-                // {
-                //     fieldname: 'send_individual',
-                //     label: 'Send to Individual',
-                //     fieldtype: 'Check',
-                //     default: 0,
-                //     change: function() {
-                //         toggle_visibility();
-                //     }
-                // },
-                {
-                    fieldtype: 'Column Break'
-                },
-                {
-                    fieldname: 'group',
-                    label: 'Group',
-                    fieldtype: 'Link',
-                    options: 'WhatsApp Group',
-                    depends_on: 'eval:doc.send_group==1'
-                },
-                {
-                    fieldtype: 'Column Break'
-                },
-                // {
-                //     fieldname: 'individual',
-                //     label: 'Individual',
-                //     fieldtype: 'Link',
-                //     options: 'WhatsApp Phone Number',
-                //     depends_on: 'eval:doc.send_individual==1'
-                // },
-                {
-                    fieldtype: 'Section Break'
-                }
-            ],
-            primary_action_label: 'Send',
-            primary_action(values) {
-                if (!values.whatsapp_template) {
-                    frappe.msgprint('WhatsApp Template is required!');
-                    return;
-                }
+        frappe.call({
+        method: 'frappe_whatsapp.utils.get_phone_number',
+        callback: function (r) {
+            if (r.message) {
+                let phone_number_list = r.message
 
-                // Call backend
-                // frappe.msgprint('Process has been started!')
-                frappe.call({
-                    method: "frappe_whatsapp.utils.trigger_bulk_wp_notification",
-                    args: {
-                        reference_names: selected_items,
-                        template_name: values.whatsapp_template,
-                        is_group: values.send_group ? 1 : 0,
-                        is_individual: values.send_individual ? 1 : 0,
-                        group_name: values.group || null,
-                        individual_name: values.individual || null
+            let d = new frappe.ui.Dialog({
+                title: 'Send WhatsApp Notification',
+                fields: [
+                    {
+                        label: 'WhatsApp Template',
+                        fieldname: 'whatsapp_template',
+                        fieldtype: 'Link',
+                        options: 'WhatsApp Notification',
+                        reqd: 1
                     },
-                    callback: function(r) {
-                        if (r.message === 'Success') {
-                            frappe.msgprint(__('Notifications sent successfully!'));
-                        }
-                    }
-                });
-
-                d.hide();
-            }
-        });
-
-        d.show();
-
-
-        function get_phone_number(contact = "") {
-            return new Promise((resolve, reject) => {
-                frappe.call({
-                    method: 'frappe_whatsapp.utils.get_phone_number',
-                    args: { contact },
-                    callback: function(r) {
-                        if (r.message) {
-                            resolve(r.message); // must be array of strings or { label, value }
-                        } else {
-                            resolve([]);
-                        }
+                    {
+                        fieldtype: 'Section Break',
+                        label: 'Send To Options'
                     },
-                    error: reject
-                });
+                    {
+                        fieldname: 'send_group',
+                        label: 'Send to Group',
+                        fieldtype: 'Check',
+                        default: 0
+                    },
+                    {
+                        fieldname: 'send_individual',
+                        label: 'Send to Individual',
+                        fieldtype: 'Check',
+                        default: 0,
+                    },
+                    {
+                        fieldtype: 'Column Break'
+                    },
+                    {
+                        fieldname: 'group',
+                        label: 'Group',
+                        fieldtype: 'Link',
+                        options: 'WhatsApp Group',
+                        depends_on: 'eval:doc.send_group==1'
+
+                    },
+                    {
+                        fieldtype: 'Column Break'
+                    },
+                    {
+                        fieldname: 'individual',
+                        label: 'Individual',
+                        fieldtype: 'Autocomplete',
+                        options: phone_number_list,
+                        depends_on: 'eval:doc.send_individual==1'
+                    },
+                    {
+                        fieldtype: 'Section Break'
+                    }
+                ],
+                primary_action_label: 'Send',
+                primary_action(values) {
+                    if (!values.whatsapp_template) {
+                        frappe.msgprint('WhatsApp Template is required!');
+                        return;
+                    }
+
+                    frappe.call({
+                        method: "frappe_whatsapp.utils.trigger_bulk_wp_notification",
+                        args: {
+                            reference_names: selected_items,
+                            template_name: values.whatsapp_template,
+                            is_group: values.send_group ? 1 : 0,
+                            is_individual: values.send_individual ? 1 : 0,
+                            group_name: values.group || null,
+                            individual_name: values.individual || null
+                        },
+                        callback: function (r) {
+                            if (r.message === 'Success') {
+                                frappe.msgprint(__('Notifications sent successfully!'));
+                            }
+                        }
+                    });
+
+                    d.hide();
+                }
             });
-        }
 
-        function toggle_visibility() {
-            d.fields_dict.group.toggle(d.get_value('send_group') ? true : false);
-            // d.fields_dict.individual.toggle(d.get_value('send_individual') ? true : false);
+            d.show();
         }
+    }
+});
+
     });
+
 
 
     //  To display report
