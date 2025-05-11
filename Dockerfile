@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.11.4
+aARG PYTHON_VERSION=3.11.4
 ARG DEBIAN_BASE=bookworm
 FROM python:${PYTHON_VERSION}-slim-${DEBIAN_BASE} AS base
 
@@ -152,9 +152,6 @@ RUN bench init \
   bench get-app https://github.com/frappe/ecommerce_integrations.git --branch ${ECOMMERCE_BRANCH} && \
   bench get-app https://github.com/frappe/print_designer.git --branch ${PRINT_DESIGNER_BRANCH} && \
   bench build --app frappe && \
-  . /home/frappe/frappe-bench/env/bin/activate && \
-  pip install playwright && \
-  playwright install && \
   echo "{}" > sites/common_site_config.json && \
   rm -rf ~/.git-credentials && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
