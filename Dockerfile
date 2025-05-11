@@ -141,7 +141,7 @@ RUN bench init \
     --verbose \
     /home/frappe/frappe-bench && \
   cd /home/frappe/frappe-bench && \
-  cho ${GIT_CREDENTIALS} > ~/.git_credentials && \
+  echo ${GIT_CREDENTIALS} > ~/.git_credentials && \
   git config --global credentials.helper store && \
   bench get-app erpnext --branch ${ERPNEXT_BRANCH} && \
   bench get-app hrms --branch ${HRMS_BRANCH} && \
