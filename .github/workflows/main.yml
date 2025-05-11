@@ -79,14 +79,14 @@ jobs:
             GIT_CREDENTIALS=${{ secrets.GIT_CREDENTIALS }}
             WHATSAPP_PRO_BRANCH=${{ github.event.inputs.whatsapp_pro}}   
             
-      - name: Set up SSH key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      # - name: Set up SSH key
+      #   uses: webfactory/ssh-agent@v0.5.3
+      #   with:
+      #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: SSH and Deploy
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} 'VERSION="${{ github.event.inputs.version }}" && \
-          sed -i "s/\(IMAGE=[^:]*:\)[^ ]*/\1${VERSION}/" ~/gitops/prod.env && \
-          docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env pull && \
-          docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env up -d'
+      # - name: SSH and Deploy
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} 'VERSION="${{ github.event.inputs.version }}" && \
+      #     sed -i "s/\(IMAGE=[^:]*:\)[^ ]*/\1${VERSION}/" ~/gitops/prod.env && \
+      #     docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env pull && \
+      #     docker compose -f ~/gitops/docker-compose-prod.yaml --env-file ~/gitops/prod.env up -d'
