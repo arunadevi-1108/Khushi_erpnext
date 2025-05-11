@@ -141,8 +141,8 @@ RUN bench init \
     --verbose \
     /home/frappe/frappe-bench && \
   cd /home/frappe/frappe-bench && \
+  cho ${GIT_CREDENTIALS} > ~/.git_credentials && \
   git config --global credentials.helper store && \
-  echo ${GIT_CREDENTIALS} > ~/.git_credentials && \
   bench get-app erpnext --branch ${ERPNEXT_BRANCH} && \
   bench get-app hrms --branch ${HRMS_BRANCH} && \
   bench get-app https://github.com/TechInsights-ai-org/Khushi_erpnext.git --branch ${KHUSHI_ERPNEXT_BRANCH} && \
@@ -151,7 +151,6 @@ RUN bench init \
   bench get-app https://github.com/resilient-tech/india-compliance.git --branch ${INDIA_COMPLIANCE_BRANCH} && \
   bench get-app https://github.com/frappe/ecommerce_integrations.git --branch ${ECOMMERCE_BRANCH} && \
   bench get-app https://github.com/frappe/print_designer.git --branch ${PRINT_DESIGNER_BRANCH} && \
-  bench build --app frappe && \
   echo "{}" > sites/common_site_config.json && \
   rm -rf ~/.git-credentials && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
