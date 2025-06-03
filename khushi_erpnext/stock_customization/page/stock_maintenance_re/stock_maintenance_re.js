@@ -182,6 +182,15 @@ frappe.pages['stock-maintenance-re'].on_page_load = function(wrapper) {
                         reqd: 1
                     },
                     {
+                        fieldtype: 'Section Break'
+                    },
+                    {
+                        fieldname: 'multi_doc_to_pdf',
+                        label: 'Multiple Doc to PDF ',
+                        fieldtype: 'Check',
+                        default: 1
+                    },
+                    {
                         fieldtype: 'Section Break',
                         label: 'Send To Options'
                     },
@@ -237,7 +246,8 @@ frappe.pages['stock-maintenance-re'].on_page_load = function(wrapper) {
                             is_group: values.send_group ? 1 : 0,
                             is_individual: values.send_individual ? 1 : 0,
                             group_name: values.group || null,
-                            individual_name: values.individual || null
+                            individual_name: values.individual || null,
+                            multi_doc_to_pdf:values.multi_doc_to_pdf? 1:0
                         },
                         callback: function (r) {
                             if (r.message === 'Success') {
