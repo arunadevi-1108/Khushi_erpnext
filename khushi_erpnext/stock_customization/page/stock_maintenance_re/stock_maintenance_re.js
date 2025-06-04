@@ -247,7 +247,8 @@ frappe.pages['stock-maintenance-re'].on_page_load = function(wrapper) {
                             is_individual: values.send_individual ? 1 : 0,
                             group_name: values.group || null,
                             individual_name: values.individual || null,
-                            multi_doc_to_pdf:values.multi_doc_to_pdf? 1:0
+                            multi_doc_to_pdf:values.multi_doc_to_pdf? 1:0,
+                            doctype:'Item'
                         },
                         callback: function (r) {
                             if (r.message === 'Success') {
