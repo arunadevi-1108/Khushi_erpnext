@@ -151,6 +151,7 @@ RUN bench init \
   bench get-app https://github.com/resilient-tech/india-compliance.git --branch ${INDIA_COMPLIANCE_BRANCH} && \
   bench get-app https://github.com/frappe/ecommerce_integrations.git --branch ${ECOMMERCE_BRANCH} && \
   bench get-app https://github.com/frappe/print_designer.git --branch ${PRINT_DESIGNER_BRANCH} && \
+  bench get-app https://github.com/frappe/payments.git --branch version-15\
   echo "{}" > sites/common_site_config.json && \
   rm -rf ~/.git-credentials && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
